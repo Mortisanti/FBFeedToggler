@@ -11,14 +11,13 @@ import schedule
 
 # Dealer to switch to
 # TODO Check if already on dealer account
-goto_dealer_id = str(14393)
+goto_dealer_id = '14393'
 xpath_fbexport = '//*[@data-exportid="960"]/div/div[7]/span'
 xpath_dealer_id = '//*[@id="DealerName"]/span[2]'
 chromedriver = r'F:\Users\Michael\Documents\Programming\Python\chromedriver.exe'
 browser_options = webdriver.ChromeOptions()
 browser_options.add_experimental_option('excludeSwitches', ['enable-logging'])
 # browser_options.add_argument('--headless')
-# browser_options.add_argument('--disable-gpu')
 driver = webdriver.Chrome(options=browser_options, executable_path=chromedriver)
 wait = WebDriverWait(driver, 10)
 
