@@ -9,7 +9,10 @@ from secrets import A_USER, A_PASS
 goto_dealer_id = '14393'
 xpath_fbexport = '//*[@data-exportid="960"]/div/div[7]/span'
 xpath_dealer_id = '//*[@id="DealerName"]/span[2]'
+
+# Used to have a full path here, hence raw string literal. Changed to search for the driver in the root folder
 chromedriver = r'chromedriver.exe'
+
 browser_options = webdriver.ChromeOptions()
 browser_options.add_experimental_option('excludeSwitches', ['enable-logging'])
 # browser_options.add_argument('--headless')
