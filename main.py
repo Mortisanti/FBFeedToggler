@@ -1,24 +1,20 @@
+#TODO Make use of argparse: dealer ID, headless on/off
+# import argparse
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from datetime import datetime
 from secrets import A_USER, A_PASS
-import os
-import time
-import schedule
 
-# Dealer to switch to
-# TODO Check if already on dealer account
 goto_dealer_id = '14393'
 xpath_fbexport = '//*[@data-exportid="960"]/div/div[7]/span'
 xpath_dealer_id = '//*[@id="DealerName"]/span[2]'
-chromedriver = r'F:\Users\Michael\Documents\Programming\Python\chromedriver.exe'
+chromedriver = r'chromedriver.exe'
 browser_options = webdriver.ChromeOptions()
 browser_options.add_experimental_option('excludeSwitches', ['enable-logging'])
 # browser_options.add_argument('--headless')
 driver = webdriver.Chrome(options=browser_options, executable_path=chromedriver)
+driver.maximize_window()
 wait = WebDriverWait(driver, 10)
 
 # Navigate to Auction123 login page, enter credentials, log in
@@ -34,7 +30,6 @@ frame_inner = driver.find_element_by_id('listContent')
 driver.switch_to.frame(frame_inner)
 
 # Get dealer ID and check if equal to provided ID; if not, switch to provided dealer ID
-
 check_dealer_id = driver.find_element_by_xpath(xpath_dealer_id)
 dealer_id = check_dealer_id.text.replace('(', '').replace(')', '')
 
@@ -60,8 +55,9 @@ frame_inner = driver.find_element_by_id('listContent')
 driver.switch_to.frame(frame_inner)
 driver.find_element_by_link_text('Export Sites').click()
 
-"""
+# Remove docstrings to enable toggling of feed Status
+'''
 # Locate feed toggle button, wait until clickable, and click it
 button_toggle = wait.until(EC.element_to_be_clickable((By.XPATH, xpath_fbexport)))
 button_toggle.click()
-"""
+'''
