@@ -1,21 +1,34 @@
-#TODO Make use of argparse: dealer ID, headless on/off
-# import argparse
+import argparse
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from secrets import A_USER, A_PASS
 
-goto_dealer_id = '14393'
+# Initialize argument parser and create positional and optional arguments
+parser = argparse.ArgumentParser(description="This program will navigate to the specified dealer's Exports page and, if specified, toggle the Facebook feed status.")
+parser.add_argument('dealer_id', type=int, help="dealer whose facebook feed status you wish to view/toggle")
+parser.add_argument('-t', '--toggle', action='store_true', help="specify to toggle the facebook feed status")
+parser.add_argument('--headless', action='store_true', help="run the browser in headless mode (invisible)")
+args = parser.parse_args()
+
+goto_dealer_id = args.dealer_id
+toggle_mode = args.toggle
+headless_mode = args.headless
 xpath_fbexport = '//*[@data-exportid="960"]/div/div[7]/span'
 xpath_dealer_id = '//*[@id="DealerName"]/span[2]'
 
-# Used to have a full path here, hence raw string literal. Changed to search for the driver in the root folder
+# I used to have a full path here, hence raw string literal. Changed it to search for the driver in the root folder
 chromedriver = r'chromedriver.exe'
 
+# Browser options
 browser_options = webdriver.ChromeOptions()
 browser_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-# browser_options.add_argument('--headless')
+if headless_mode:
+    browser_options.add_argument('--headless')
+    # If both in "toggle" mode and "headless" mode, Selenium times out
+    # Ironically, setting a window size is a workaround for this issue. Seems to happen with responsive pages
+    browser_options.add_argument("--window-size=1920,1080")
 driver = webdriver.Chrome(options=browser_options, executable_path=chromedriver)
 driver.maximize_window()
 wait = WebDriverWait(driver, 10)
@@ -37,7 +50,7 @@ check_dealer_id = driver.find_element_by_xpath(xpath_dealer_id)
 dealer_id = check_dealer_id.text.replace('(', '').replace(')', '')
 
 # Switch to supplied dealer ID, if not already in the account
-if goto_dealer_id != dealer_id:
+if str(goto_dealer_id) != dealer_id:
     driver.get(f'https://my.auction123.com/DealerRedirect.aspx?dealer_id={goto_dealer_id}')
     iframe = driver.find_element_by_tag_name('iframe')
 else:
@@ -58,9 +71,15 @@ frame_inner = driver.find_element_by_id('listContent')
 driver.switch_to.frame(frame_inner)
 driver.find_element_by_link_text('Export Sites').click()
 
-# Remove docstrings to enable toggling of feed Status
-'''
-# Locate feed toggle button, wait until clickable, and click it
-button_toggle = wait.until(EC.element_to_be_clickable((By.XPATH, xpath_fbexport)))
-button_toggle.click()
-'''
+if toggle_mode:
+    # Locate feed toggle button, wait until clickable, and click it
+    button_toggle = wait.until(EC.element_to_be_clickable((By.XPATH, xpath_fbexport)))
+    button_toggle.click()
+    #TODO Check if on or off?
+    print("Facebook feed status has been toggled.")
+else:
+    print("Navigation complete.")
+
+print("Press any key to exit program...")
+if input():
+    exit()
