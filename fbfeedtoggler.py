@@ -79,7 +79,3 @@ if toggle_mode:
     print("Facebook feed status has been toggled.")
 else:
     print("Navigation complete.")
-
-print("Press any key to exit program...")
-if input():
-    exit()
