@@ -1,9 +1,17 @@
+# TODO Implement ability to provide multiple dealers
+# TODO Catch exceptions for non-existent/cancelled dealer IDs
+# TODO Check current feed status on the off-chance that it's already disabled, if necessary
+
 import argparse
+import time
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+# Supply a secrets.py file with variables for dashboard login credentials
 from secrets import A_USER, A_PASS
+
+start_time = time.time()
 
 # Initialize argument parser and create positional and optional arguments
 parser = argparse.ArgumentParser(description="This program will navigate to the specified dealer's Exports page and, if specified, toggle the Facebook feed status.")
@@ -75,7 +83,9 @@ if toggle_mode:
     # Locate feed toggle button, wait until clickable, and click it
     button_toggle = wait.until(EC.element_to_be_clickable((By.XPATH, xpath_fbexport)))
     button_toggle.click()
-    #TODO Check if on or off?
-    print("Facebook feed status has been toggled.")
+    print(f"{goto_dealer_id} - Facebook feed status has been toggled.")
 else:
     print("Navigation complete.")
+
+end_time = (round(time.time() - start_time, 2))
+print(f"Process time: {end_time}")
