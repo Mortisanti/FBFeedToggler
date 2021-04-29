@@ -1,6 +1,7 @@
 # TODO Implement ability to provide multiple dealers
 # TODO Catch exceptions for non-existent/cancelled dealer IDs
 # TODO Check current feed status on the off-chance that it's already disabled, if necessary
+# TODO Consider sending requests instead https://my.auction123.com/Inventory/updateexportsites.aspx?disablesite=true&siteid=960&mapid=117853288275809
 
 import argparse
 import time
