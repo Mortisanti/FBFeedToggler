@@ -9,8 +9,8 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-# Supply a secrets.py file with variables for dashboard login credentials
-from secrets import A_USER, A_PASS
+# Supply a credentials.py file with variables for dashboard login credentials
+from credentials import A_USER, A_PASS
 
 start_time = time.time()
 
